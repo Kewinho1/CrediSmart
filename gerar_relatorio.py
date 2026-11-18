@@ -4,6 +4,12 @@
 import json, math
 from pathlib import Path
 from xml.sax.saxutils import escape
+
+# A geração do PDF sempre executa novamente o pipeline. Assim, as figuras são
+# criadas pelo Matplotlib a partir da execução atual, sem reutilizar PNGs antigos.
+from main import main as executar_experimento
+executar_experimento()
+
 import reportlab
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
@@ -16,6 +22,7 @@ from reportlab.lib.utils import ImageReader
 
 R = Path(__file__).resolve().parent
 D = json.loads((R/'resultados.json').read_text(encoding='utf-8'))
+FIG_DIR = R / D['figuras_dir']
 OUT = R / 'relatorio_tecnico.pdf'
 W,H = A4
 M = 48
@@ -113,7 +120,7 @@ def line():
 
 def figure(name,width=CW,height=None,captiontext=None):
     global y
-    p=R/'figuras'/name
+    p=FIG_DIR/name
     im=ImageReader(str(p));iw,ih=im.getSize()
     if height is None: height=width*ih/iw
     c.drawImage(im,M,y-height,width=width,height=height,mask='auto')

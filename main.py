@@ -13,7 +13,7 @@ import numpy as np
 from sklearn.linear_model import LogisticRegression
 from sklearn.neural_network import MLPClassifier
 
-from credismart.config import BASE, SEED
+from credismart.config import BASE, FIG, SEED
 from credismart.dados import gerar_dados, separar_padronizar
 from credismart.modelos import MLP, PerceptronRosenblatt, metricas
 from credismart.fuzzy import Mamdani
@@ -104,6 +104,7 @@ def main():
 
     saida={
         "seed_dados":SEED,"seed_split":42,"tamanhos":{k:len(Y[k]) for k in Y},
+        "figuras_dir":FIG.relative_to(BASE).as_posix(),
         "proporcao_y1":{k:float(Y[k].mean()) for k in Y},
         "padronizacao_treino":parametros,
         "xor":{"entradas":xx.tolist(),"esperado":yy.tolist(),"probabilidades":xor_prob.tolist(),

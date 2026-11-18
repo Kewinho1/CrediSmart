@@ -1,15 +1,15 @@
 # CrediSmart — Trabalho Prático Integrador de Inteligência Artificial
 
 Centro Universitário Padre Anchieta · 2º semestre de 2026  
+**Prazo:** 17/11/2026, às 23h59 · **Arguição:** 18/11/2026
 
-## 1. Identificação do grupo 
+## 1. Identificação do grupo (preencher antes da entrega)
 
 | Integrante | RA |
 |---|---|
-| Aluno(a) 1: Alessandra de Freitas  Bichara | 2405879 |
-| Aluno(a) 2: Kewin Lorente Magoga | 2403809 |
-| Aluno(a) 3: Livia Ferreira Rodrigues | 2408713 |
-| Aluno(a) 4: Manuella de Souza Filgueiras | 2404788 |
+| Aluno(a) 1: __________________ | __________________ |
+| Aluno(a) 2: __________________ | __________________ |
+| Aluno(a) 3: __________________ | __________________ |
 
 ## 2. O que o projeto faz
 
@@ -37,7 +37,7 @@ CrediSmart/
 │   └── graficos.py             # Gráficos de análise e demonstração
 ├── tests/
 │   └── test_algoritmos.py      # 8 testes de verificação matemática
-├── figuras/                   # Imagens geradas pelo script
+├── figuras/                   # Nova pasta de gráficos em cada execução
 ├── resultados.json             # Valores numéricos da execução
 ├── gerar_relatorio.py          # Cria o PDF a partir dos resultados e gráficos
 ├── relatorio_tecnico.pdf       # Relatório final de 8 páginas
@@ -46,7 +46,7 @@ CrediSmart/
 └── README.md
 ```
 
-A separação por módulo segue as partes do enunciado e facilita localizar cada algoritmo durante a arguição. **`main.py` continua sendo o único comando obrigatório de execução.**
+A separação por módulo segue as partes do enunciado e facilita localizar cada algoritmo durante a arguição. **`python gerar_relatorio.py` é o comando único para executar o experimento e atualizar o relatório.**
 
 ## 4. Como instalar e executar
 
@@ -59,7 +59,6 @@ py -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
 python -m unittest discover -s tests -v
-python main.py
 python gerar_relatorio.py
 ```
 
@@ -70,11 +69,12 @@ python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
 python -m unittest discover -s tests -v
-python main.py
 python gerar_relatorio.py
 ```
 
-`main.py` recria `resultados.json` e as seis imagens em `figuras/`; `gerar_relatorio.py` recria o PDF. O arquivo PDF pronto **já está incluído no ZIP**.
+`gerar_relatorio.py` executa o pipeline completo e recria `resultados.json`, as seis imagens com Matplotlib e o PDF. Cada execução grava as figuras em uma nova pasta `figuras/execucao_<id>/`, e o relatório usa exclusivamente as imagens dessa execução. Não há dependência dos PNGs antigos incluídos em versões anteriores do pacote. Como a semente e os dados são fixos pelo enunciado, os valores dos gráficos podem se repetir, embora as figuras sejam geradas novamente. O arquivo PDF pronto **já está incluído no ZIP**.
+
+Para gerar apenas os resultados e os gráficos, sem atualizar o PDF, execute `python main.py`. Se executar `main.py` e depois `gerar_relatorio.py`, o experimento será executado duas vezes.
 
 A suíte de testes inclui XOR, verificação dos gradientes da MLP por diferenças finitas, separação e padronização da base, lógica fuzzy e limites dos cromossomos. Os testes **não substituem** a execução completa do experimento.
 
@@ -107,7 +107,7 @@ O AG encontrou **22 neurônios, taxa 0,3688 e 107 épocas**. O ganho observado f
 ## 7. Conferência para a entrega
 
 - [ ] Preencher nomes e RAs nesta página e na capa do PDF.
-- [ ] Executar os **8 testes** e o comando `python main.py` em uma máquina do grupo.
+- [ ] Executar os **8 testes** e o comando `python gerar_relatorio.py` em uma máquina do grupo.
 - [ ] Conferir gráficos, tabela dos 5 clientes, relatório de 6–10 páginas e arquivo ZIP.
 - [ ] Revisar **declaração de uso de IA** no relatório e refletir corretamente quais ferramentas foram usadas.
 - [ ] Verificar se todos conseguem explicar forward, backprop, XOR, centróide, aptidão, seleção, cruzamento e mutação.
@@ -115,4 +115,4 @@ O AG encontrou **22 neurônios, taxa 0,3688 e 107 épocas**. O ganho observado f
 
 ## 8. Declaração de uso de IA generativa
 
-Foram usadas ferramentas de IA generativa, incluindo **ChatGPT (OpenAI)**, como auxílio para elaborar e organizar código, explicações, gráficos, testes, documentação e relatório.
+Foram usadas ferramentas de IA generativa, incluindo **ChatGPT (OpenAI)**, como auxílio para elaborar e organizar código, explicações, gráficos, testes, documentação e relatório. **O grupo deve revisar, compreender e assumir a autoria e a responsabilidade pelo material enviado.** Atualizem a declaração caso outras ferramentas também tenham participado.
