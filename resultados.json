@@ -1,0 +1,377 @@
+{
+  "seed_dados": 2026,
+  "seed_split": 42,
+  "tamanhos": {
+    "treino": 1400,
+    "validacao": 300,
+    "teste": 300
+  },
+  "proporcao_y1": {
+    "treino": 0.29285714285714287,
+    "validacao": 0.33,
+    "teste": 0.3233333333333333
+  },
+  "padronizacao_treino": {
+    "media": [
+      8.171983672824433,
+      43.815714285714286,
+      0.3972051955047684,
+      0.7971428571428572,
+      4.96080805823902
+    ],
+    "desvio": [
+      0.5020981007983192,
+      15.333726932244929,
+      0.20414396621421232,
+      0.9221049566184968,
+      5.115552158028582
+    ]
+  },
+  "xor": {
+    "entradas": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0
+      ],
+      [
+        1.0,
+        0.0
+      ],
+      [
+        1.0,
+        1.0
+      ]
+    ],
+    "esperado": [
+      0,
+      1,
+      1,
+      0
+    ],
+    "probabilidades": [
+      0.00019626567596895002,
+      0.9993755848378626,
+      0.999636248818231,
+      0.0006029534837498846
+    ],
+    "predicoes": [
+      0,
+      1,
+      1,
+      0
+    ]
+  },
+  "configuracao_manual": {
+    "ocultos": 16,
+    "taxa": 0.12,
+    "epocas": 140
+  },
+  "f1_validacao_manual": 0.8324324324324325,
+  "metricas_teste_comparativo": {
+    "Perceptron": {
+      "acuracia": 0.8166666666666667,
+      "precisao": 0.723404255319149,
+      "recall": 0.7010309278350515,
+      "f1": 0.7120418848167538,
+      "TP": 68,
+      "FP": 26,
+      "TN": 177,
+      "FN": 29
+    },
+    "Regressao Logistica": {
+      "acuracia": 0.8966666666666666,
+      "precisao": 0.9024390243902439,
+      "recall": 0.7628865979381443,
+      "f1": 0.8268156424581006,
+      "TP": 74,
+      "FP": 8,
+      "TN": 195,
+      "FN": 23
+    },
+    "MLP sklearn": {
+      "acuracia": 0.8966666666666666,
+      "precisao": 0.9024390243902439,
+      "recall": 0.7628865979381443,
+      "f1": 0.8268156424581006,
+      "TP": 74,
+      "FP": 8,
+      "TN": 195,
+      "FN": 23
+    },
+    "MLP manual": {
+      "acuracia": 0.89,
+      "precisao": 0.8902439024390244,
+      "recall": 0.7525773195876289,
+      "f1": 0.8156424581005587,
+      "TP": 73,
+      "FP": 9,
+      "TN": 194,
+      "FN": 24
+    }
+  },
+  "ag": {
+    "populacao": 10,
+    "geracoes": 10,
+    "melhor": {
+      "ocultos": 22,
+      "taxa": 0.3688,
+      "epocas": 107
+    },
+    "melhor_f1_validacao": 0.851063829787234,
+    "avaliacoes_distintas": 74,
+    "historico": [
+      {
+        "geracao": 1,
+        "melhor": 0.8449197860962567,
+        "media": 0.8234546291857903,
+        "melhor_cromossomo": {
+          "ocultos": 7,
+          "taxa": 0.2468,
+          "epocas": 147
+        }
+      },
+      {
+        "geracao": 2,
+        "melhor": 0.8449197860962567,
+        "media": 0.8291042030729878,
+        "melhor_cromossomo": {
+          "ocultos": 7,
+          "taxa": 0.2468,
+          "epocas": 147
+        }
+      },
+      {
+        "geracao": 3,
+        "melhor": 0.851063829787234,
+        "media": 0.8376941961874749,
+        "melhor_cromossomo": {
+          "ocultos": 22,
+          "taxa": 0.3688,
+          "epocas": 107
+        }
+      },
+      {
+        "geracao": 4,
+        "melhor": 0.851063829787234,
+        "media": 0.8349396724575053,
+        "melhor_cromossomo": {
+          "ocultos": 22,
+          "taxa": 0.3688,
+          "epocas": 107
+        }
+      },
+      {
+        "geracao": 5,
+        "melhor": 0.851063829787234,
+        "media": 0.8399830945629413,
+        "melhor_cromossomo": {
+          "ocultos": 22,
+          "taxa": 0.3688,
+          "epocas": 107
+        }
+      },
+      {
+        "geracao": 6,
+        "melhor": 0.851063829787234,
+        "media": 0.8393450314944568,
+        "melhor_cromossomo": {
+          "ocultos": 22,
+          "taxa": 0.3688,
+          "epocas": 107
+        }
+      },
+      {
+        "geracao": 7,
+        "melhor": 0.851063829787234,
+        "media": 0.8435090188688988,
+        "melhor_cromossomo": {
+          "ocultos": 22,
+          "taxa": 0.3688,
+          "epocas": 107
+        }
+      },
+      {
+        "geracao": 8,
+        "melhor": 0.851063829787234,
+        "media": 0.8330128233725624,
+        "melhor_cromossomo": {
+          "ocultos": 22,
+          "taxa": 0.3688,
+          "epocas": 107
+        }
+      },
+      {
+        "geracao": 9,
+        "melhor": 0.851063829787234,
+        "media": 0.8397500119786179,
+        "melhor_cromossomo": {
+          "ocultos": 22,
+          "taxa": 0.3688,
+          "epocas": 107
+        }
+      },
+      {
+        "geracao": 10,
+        "melhor": 0.851063829787234,
+        "media": 0.8485661424606846,
+        "melhor_cromossomo": {
+          "ocultos": 22,
+          "taxa": 0.3688,
+          "epocas": 107
+        }
+      }
+    ]
+  },
+  "metricas_teste_otimizada": {
+    "acuracia": 0.9133333333333333,
+    "precisao": 0.927710843373494,
+    "recall": 0.7938144329896907,
+    "f1": 0.8555555555555555,
+    "TP": 77,
+    "FP": 6,
+    "TN": 197,
+    "FN": 20
+  },
+  "comparacao_f1_teste_delta": 0.039913097454996826,
+  "limite_maximo_ilustrativo_reais": 20000.0,
+  "pipeline_cinco_clientes": [
+    {
+      "id_teste": 16,
+      "renda_reais": 3788.9793429840784,
+      "idade": 48,
+      "comprometimento": 0.31746058025378393,
+      "atrasos": 0,
+      "tempo_emprego": 0.39056293667413006,
+      "inadimplente_real": 0,
+      "probabilidade_inadimplencia": 0.0022901037985115294,
+      "limite_percentual": 67.51230214445638,
+      "limite_reais": 13502.460428891276
+    },
+    {
+      "id_teste": 130,
+      "renda_reais": 3575.262061002319,
+      "idade": 51,
+      "comprometimento": 0.474293334451851,
+      "atrasos": 0,
+      "tempo_emprego": 1.0466468578995844,
+      "inadimplente_real": 0,
+      "probabilidade_inadimplencia": 0.017251413690802332,
+      "limite_percentual": 50.0,
+      "limite_reais": 10000.0
+    },
+    {
+      "id_teste": 145,
+      "renda_reais": 5644.0608046162715,
+      "idade": 26,
+      "comprometimento": 0.33892714111123573,
+      "atrasos": 1,
+      "tempo_emprego": 0.593099614601281,
+      "inadimplente_real": 0,
+      "probabilidade_inadimplencia": 0.08675212915524386,
+      "limite_percentual": 64.9110195101458,
+      "limite_reais": 12982.203902029161
+    },
+    {
+      "id_teste": 105,
+      "renda_reais": 6097.040686956153,
+      "idade": 34,
+      "comprometimento": 0.5312301176094125,
+      "atrasos": 1,
+      "tempo_emprego": 0.26608658555373843,
+      "inadimplente_real": 0,
+      "probabilidade_inadimplencia": 0.3387855534187327,
+      "limite_percentual": 49.99999999999999,
+      "limite_reais": 9999.999999999998
+    },
+    {
+      "id_teste": 240,
+      "renda_reais": 3260.9672123014443,
+      "idade": 43,
+      "comprometimento": 0.6575004414160992,
+      "atrasos": 1,
+      "tempo_emprego": 2.2417806940511085,
+      "inadimplente_real": 1,
+      "probabilidade_inadimplencia": 0.8129601685166169,
+      "limite_percentual": 17.20367990595187,
+      "limite_reais": 3440.735981190374
+    }
+  ],
+  "exemplo_fuzzy_passo_a_passo": {
+    "risco": 0.08675212915524386,
+    "comprometimento": 0.33892714111123573,
+    "fuzzificacao_risco": {
+      "baixo": 1.0,
+      "medio": 0.0,
+      "alto": 0.0
+    },
+    "fuzzificacao_comprometimento": {
+      "baixo": 0.4442914355550571,
+      "medio": 0.46309047037078577,
+      "alto": 0.0
+    },
+    "regras": [
+      {
+        "risco": "baixo",
+        "comprometimento": "baixo",
+        "saida": "alto",
+        "ativacao": 0.4442914355550571
+      },
+      {
+        "risco": "baixo",
+        "comprometimento": "medio",
+        "saida": "medio",
+        "ativacao": 0.46309047037078577
+      },
+      {
+        "risco": "baixo",
+        "comprometimento": "alto",
+        "saida": "baixo",
+        "ativacao": 0.0
+      },
+      {
+        "risco": "medio",
+        "comprometimento": "baixo",
+        "saida": "medio",
+        "ativacao": 0.0
+      },
+      {
+        "risco": "medio",
+        "comprometimento": "medio",
+        "saida": "medio",
+        "ativacao": 0.0
+      },
+      {
+        "risco": "medio",
+        "comprometimento": "alto",
+        "saida": "baixo",
+        "ativacao": 0.0
+      },
+      {
+        "risco": "alto",
+        "comprometimento": "baixo",
+        "saida": "baixo",
+        "ativacao": 0.0
+      },
+      {
+        "risco": "alto",
+        "comprometimento": "medio",
+        "saida": "baixo",
+        "ativacao": 0.0
+      },
+      {
+        "risco": "alto",
+        "comprometimento": "alto",
+        "saida": "baixo",
+        "ativacao": 0.0
+      }
+    ],
+    "area": 30.84734156873754,
+    "momento": 2002.3323904044541,
+    "centroide_percentual": 64.9110195101458
+  },
+  "observacao": "Resultados apenas academicos, com base sintetica e sem avaliacao de vies por grupo."
+}
