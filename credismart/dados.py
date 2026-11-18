@@ -16,9 +16,9 @@ def gerar_dados(n=2000, seed=2026):
     return X,y
 
 
-def separar_padronizar():
-    X, y = gerar_dados()
-    perm = np.random.default_rng(42).permutation(len(y))
+def separar_padronizar(seed_dados=2026, seed_split=42):
+    X, y = gerar_dados(seed=seed_dados)
+    perm = np.random.default_rng(seed_split).permutation(len(y))
     tr, va, te = perm[:1400], perm[1400:1700], perm[1700:2000]
     assert len(set(tr) & set(va)) == len(set(tr) & set(te)) == len(set(va) & set(te)) == 0
     Xraw = {"treino": X[tr].copy(), "validacao": X[va].copy(), "teste": X[te].copy()}

@@ -25,7 +25,7 @@ from credismart.graficos import (
 
 def main():
     estilo()
-    dados, Y, raw, parametros = separar_padronizar()
+    dados, Y, raw, parametros = separar_padronizar(seed_dados=SEED)
     Xtr,Xva,Xte=(dados[k] for k in ["treino","validacao","teste"])
     ytr,yva,yte=(Y[k] for k in ["treino","validacao","teste"])
     print("Divisao: treino 1400, validacao 300, teste 300")
@@ -58,7 +58,6 @@ def main():
         "MLP manual": rede_manual,
     }
     comparativo={nome:metricas(yte,mdl.predict(Xte)) for nome,mdl in modelos.items()}
-    grafico_comparativo(comparativo)
 
     fuzzy=Mamdani()
     grafico_pertinencia(fuzzy)
@@ -72,12 +71,16 @@ def main():
     assert fuzzy.inferir(.05,.05) > fuzzy.inferir(.95,.95)
 
     print("Executando AG (10 individuos x 10 geracoes)...",flush=True)
-    ag=AlgoritmoGenetico(Xtr,ytr,Xva,yva,populacao=10,geracoes=10)
+    ag=AlgoritmoGenetico(Xtr,ytr,Xva,yva,populacao=10,geracoes=10,seed=SEED)
     melhor, melhor_f1_val=ag.executar()
     grafico_ag(ag.historico)
     rede_otimizada=MLP(5,melhor.ocultos,melhor.taxa,seed=SEED).fit(
         Xtr,ytr,epocas=melhor.epocas,seed=SEED)
     metricas_otimizada=metricas(yte,rede_otimizada.predict(Xte))
+    # Este grafico so e criado depois da avaliacao final para incluir tambem a
+    # configuracao encontrada pelo AG. Todos os valores vem da execucao atual.
+    dados_comparacao_grafico={**comparativo,"MLP otimizada (AG)":metricas_otimizada}
+    grafico_comparativo(dados_comparacao_grafico)
     pred_manual=rede_manual.predict(Xte)
     p_otimizada=rede_otimizada.predict_proba(Xte)
 
@@ -112,6 +115,7 @@ def main():
         "configuracao_manual":asdict(config_manual),
         "f1_validacao_manual":metricas(yva,rede_manual.predict(Xva))["f1"],
         "metricas_teste_comparativo":comparativo,
+        "dados_grafico_comparativo":dados_comparacao_grafico,
         "ag":{"populacao":ag.n,"geracoes":ag.g,"melhor":asdict(melhor),
               "melhor_f1_validacao":melhor_f1_val,"avaliacoes_distintas":len(ag.cache),
               "historico":ag.historico},

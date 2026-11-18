@@ -10,6 +10,26 @@ from credismart.dados import gerar_dados, separar_padronizar
 from credismart.modelos import MLP, PerceptronRosenblatt, metricas
 from credismart.fuzzy import Mamdani
 from credismart.genetico import AlgoritmoGenetico, Cromossomo
+from credismart.relatorio_dados import extrair_integrantes
+
+
+class TestDadosRelatorio(unittest.TestCase):
+    def test_integrantes_sao_lidos_do_readme(self):
+        conteudo = """# Projeto
+
+## 1. Identificação do grupo
+
+| Integrante | RA |
+|---|---|
+| Ana Silva | 123456 |
+| Aluno(a) 2: Bruno Souza | 654321 |
+
+## 2. Conteúdo
+"""
+        self.assertEqual(extrair_integrantes(conteudo), [
+            {"nome": "Ana Silva", "ra": "123456"},
+            {"nome": "Bruno Souza", "ra": "654321"},
+        ])
 
 
 class TestDados(unittest.TestCase):
@@ -23,6 +43,12 @@ class TestDados(unittest.TestCase):
         self.assertTrue(np.allclose(dados["treino"].std(axis=0), 1, atol=1e-12))
         self.assertEqual(sum(map(len, classes.values())), 2000)
         self.assertEqual(len(parametros["media"]), 5)
+
+    def test_semente_altera_os_dados(self):
+        x1, y1 = gerar_dados(seed=2026)
+        x2, y2 = gerar_dados(seed=2027)
+        self.assertFalse(np.array_equal(x1, x2))
+        self.assertFalse(np.array_equal(y1, y2))
 
 
 class TestMLP(unittest.TestCase):

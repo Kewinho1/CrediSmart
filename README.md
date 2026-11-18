@@ -7,9 +7,12 @@ Centro Universitário Padre Anchieta · 2º semestre de 2026
 
 | Integrante | RA |
 |---|---|
-| Aluno(a) 1: __________________ | __________________ |
-| Aluno(a) 2: __________________ | __________________ |
-| Aluno(a) 3: __________________ | __________________ |
+| Aluno(a): Alessandra de Freitas  Bichara | 2405879 |
+| Aluno(a): Kewin Lorente Magoga | 2403809 |
+| Aluno(a): Livia Ferreira Rodrigues | 2408713 |
+| Aluno(a): Manuella de Souza Filgueiras | 2404788 |
+
+O gerador lê esta tabela automaticamente. Salve os nomes e RAs aqui antes de executar `python gerar_relatorio.py`; a capa e os metadados do PDF serão atualizados com esses dados.
 
 ## 2. O que o projeto faz
 
@@ -115,4 +118,4 @@ O AG encontrou **22 neurônios, taxa 0,3688 e 107 épocas**. O ganho observado f
 
 ## 8. Declaração de uso de IA generativa
 
-Foram usadas ferramentas de IA generativa, incluindo **ChatGPT (OpenAI)**, como auxílio para elaborar e organizar código, explicações, gráficos, testes, documentação e relatório. **O grupo deve revisar, compreender e assumir a autoria e a responsabilidade pelo material enviado.** Atualizem a declaração caso outras ferramentas também tenham participado.
+Foram utilizadas ferramentas de IA generativa da OpenAI, incluindo ChatGPT e Codex, como apoio na implementação e revisão do código, criação de testes, geração de gráficos, organização da documentação e elaboração do relatório. Todo o conteúdo foi revisado pelos integrantes, que assumem responsabilidade integral pelo trabalho apresentado.

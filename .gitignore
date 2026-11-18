@@ -1,0 +1,27 @@
+# Ambientes virtuais
+.venv/
+venv/
+env/
+
+# Cache e artefatos do Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Arquivos gerados a cada execucao
+figuras/execucao_*/
+relatorio_teste_seed_*.pdf
+!relatorio_teste_seed_2027.pdf
+!relatorio_teste_seed_3030.pdf
+relatorio_tecnico_atualizado.pdf
+
+# Editores e sistema operacional
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

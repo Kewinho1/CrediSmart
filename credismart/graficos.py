@@ -72,7 +72,12 @@ def grafico_comparativo(tabela):
     nomes=list(tabela)
     xx=np.arange(len(nomes));w=.2
     for j, met in enumerate(["acuracia","precisao","recall","f1"]):
-        ax.bar(xx+(j-1.5)*w,[tabela[n][met] for n in nomes],width=w,label=met.capitalize())
+        valores=[tabela[n][met] for n in nomes]
+        barras=ax.bar(xx+(j-1.5)*w,valores,width=w,label=met.capitalize())
+        # O valor impresso torna evidente que a figura foi montada com as
+        # metricas desta execucao, e nao carregada como uma imagem ilustrativa.
+        ax.bar_label(barras,labels=[f"{v:.2f}" for v in valores],padding=2,
+                     fontsize=6,rotation=90)
     ax.set(xticks=xx,xticklabels=nomes,ylim=(0,1.08),ylabel="Valor",
            title="Desempenho comparado no teste (limiar 0,5)")
     ax.legend(ncol=4,fontsize=8,loc="upper center")

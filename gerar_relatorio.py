@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Gera relatorio PDF de 8 paginas a partir dos resultados reais do main.py."""
-import json, math
+import json, math, os
 from pathlib import Path
 from xml.sax.saxutils import escape
+from credismart.relatorio_dados import ler_integrantes
 
 # A geração do PDF sempre executa novamente o pipeline. Assim, as figuras são
 # criadas pelo Matplotlib a partir da execução atual, sem reutilizar PNGs antigos.
@@ -22,8 +23,9 @@ from reportlab.lib.utils import ImageReader
 
 R = Path(__file__).resolve().parent
 D = json.loads((R/'resultados.json').read_text(encoding='utf-8'))
+INTEGRANTES = ler_integrantes(R/'README.md')
 FIG_DIR = R / D['figuras_dir']
-OUT = R / 'relatorio_tecnico.pdf'
+OUT = R / Path(os.environ.get('CREDISMART_RELATORIO','relatorio_tecnico.pdf')).name
 W,H = A4
 M = 48
 CW = W - 2*M
@@ -57,7 +59,8 @@ bullet=ParagraphStyle('bullet',parent=body,fontSize=8.8,leading=14,leftIndent=12
 
 c=canvas.Canvas(str(OUT),pagesize=A4)
 c.setTitle('CrediSmart | Sistema hibrido de decisao de credito')
-c.setAuthor('Grupo CrediSmart - identificacao pendente')
+nomes_autores=[item['nome'] for item in INTEGRANTES if '_' not in item['nome']]
+c.setAuthor(', '.join(nomes_autores) if nomes_autores else 'Grupo CrediSmart - identificacao pendente')
 y=H-M
 page=0
 
@@ -169,7 +172,13 @@ c.setFont('DejaVu',11);c.setFillColor(colors.HexColor('#d4e4f1'))
 c.drawString(M,H-317,'Rede neural MLP + inferência fuzzy Mamdani + algoritmo genético')
 coverbox_y=H-390
 c.setFillColor(colors.HexColor('#203c58'));c.roundRect(M,coverbox_y-160,CW,160,12,fill=1,stroke=0)
-for i,(lab,v) in enumerate([('AMOSTRAS','2.000'),('F1 MLP MANUAL','81,6%'),('F1 MLP OTIMIZADA','85,6%')]):
+total_amostras=sum(D['tamanhos'].values())
+metricas_capa=[
+    ('AMOSTRAS',f'{total_amostras:,}'.replace(',','.')),
+    ('F1 MLP MANUAL',pct(D['metricas_teste_comparativo']['MLP manual']['f1'])),
+    ('F1 MLP OTIMIZADA',pct(D['metricas_teste_otimizada']['f1'])),
+]
+for i,(lab,v) in enumerate(metricas_capa):
     x=M+22+i*157
     c.setFont('DejaVu',8.2);c.setFillColor(colors.HexColor('#bad1e6'))
     c.drawString(x,coverbox_y-42,lab)
@@ -179,11 +188,9 @@ c.setFont('DejaVu',9.4);c.setFillColor(WHITE)
 c.drawString(M+22,coverbox_y-124,'Resultados reproduzíveis usando os dados e sementes do enunciado.')
 c.setFont('DejaVu-Bold',9.5);c.setFillColor(colors.HexColor('#8edbce'))
 c.drawString(M,212,'IDENTIFICAÇÃO DO GRUPO')
-c.setFont('DejaVu',10);c.setFillColor(WHITE)
-for j,txt in enumerate(['Aluno(a) 1: ________________________  RA: ______________',
-                        'Aluno(a) 2: ________________________  RA: ______________',
-                        'Aluno(a) 3: ________________________  RA: ______________']):
-    c.drawString(M,188-j*25,txt)
+c.setFont('DejaVu',9.5 if len(INTEGRANTES)>3 else 10);c.setFillColor(WHITE)
+for j,item in enumerate(INTEGRANTES):
+    c.drawString(M,188-j*22,f"{item['nome']}  ·  RA: {item['ra']}")
 c.setFont('DejaVu',9);c.setFillColor(colors.HexColor('#a8c7e3'))
 c.drawString(M,64,'Relatório de projeto acadêmico  ·  16 de novembro de 2026')
 c.drawString(M,46,'Revisar identificação e declaração de uso de IA antes de entregar.')
@@ -192,7 +199,7 @@ c.drawString(M,46,'Revisar identificação e declaração de uso de IA antes de 
 newpage('01 / Introdução e metodologia','Problema, dados e aprendizagem')
 para('<b>Objetivo.</b> Investigar um processo automatizado de análise de crédito em três estágios: uma MLP estima P(inadimplência), um controlador fuzzy transforma o risco e o comprometimento de renda em percentual de limite, e um algoritmo genético busca hiperparâmetros da MLP. Todos os componentes centrais foram implementados manualmente com NumPy.')
 head('Base sintética e prevenção de vazamento')
-para('A função <b>gerar_dados(n=2000, seed=2026)</b> foi copiada do enunciado. As variáveis são renda, idade, comprometimento de renda, atrasos nos últimos 12 meses e tempo de emprego. O alvo y = 1 representa inadimplência. A divisão foi realizada com <b>default_rng(42).permutation</b>, sem sobreposição entre conjuntos.')
+para(f"A função <b>gerar_dados(n=2000, seed={D['seed_dados']})</b> foi copiada do enunciado. As variáveis são renda, idade, comprometimento de renda, atrasos nos últimos 12 meses e tempo de emprego. O alvo y = 1 representa inadimplência. A divisão foi realizada com <b>default_rng({D['seed_split']}).permutation</b>, sem sobreposição entre conjuntos.")
 tab([['Conjunto','Amostras','% inadimplentes','Finalidade'],
      ['Treino','1.400',pct(D['proporcao_y1']['treino']),'Ajustar os pesos'],
      ['Validação','300',pct(D['proporcao_y1']['validacao']),'Ajustar hiperparâmetros'],
@@ -207,7 +214,8 @@ para('XOR não é linearmente separável: nenhuma reta classifica corretamente o
 newpage('02 / Redes neurais','MLP do zero e comparação')
 para('A MLP tem <b>cinco entradas, uma camada oculta tanh e uma saída sigmoide</b>. Inicializa pesos aleatórios com escala proporcional à largura da camada, executa forward vetorizado, mede entropia cruzada binária (BCE) e calcula gradientes de W1, b1, W2 e b2 via regra da cadeia. O treinamento usa descida do gradiente em minibatches de até 128 exemplos, sem biblioteca de redes neurais.')
 para('<b>Forward:</b> h = tanh(XW1 + b1), p = sigmoide(hW2 + b2). <b>Erro de saída:</b> dZ2 = (p - y)/m. <b>Retropropagação:</b> dZ1 = (dZ2 W2<super>T</super>) × (1 - h²), com atualização W ← W - taxa × gradiente. O cálculo da BCE usa logaddexp para estabilidade numérica.','small')
-figure('perda_mlp.png',width=425,height=192,captiontext='Figura 2. Perda de treino e validação da configuração manual (16 neurônios, taxa 0,12, 140 épocas).')
+cfg=D['configuracao_manual']
+figure('perda_mlp.png',width=425,height=192,captiontext=f"Figura 2. Perda de treino e validação da configuração manual ({cfg['ocultos']} neurônios, taxa {fmt(cfg['taxa'],2)}, {cfg['epocas']} épocas).")
 head('Desempenho final no teste (limiar 0,5)')
 rows=[['Modelo','Acurácia','Precisão','Recall','F1']]
 for nome,m in D['metricas_teste_comparativo'].items():
@@ -247,7 +255,8 @@ tab([['Regra','Antecedentes','Saída','Ativação α']]+[
       [str(i+1),item['risco']+' + '+item['comprometimento'],item['saida'],fmt(item['ativacao'],4)]
       for i,item in enumerate(regras)],
     widths=[55,205,105,CW-365],font_size=7.6,row_pad=2.2)
-para('Por exemplo, R1: min(1,0000; 0,4443) = <b>0,4443</b> e R2: min(1,0000; 0,4631) = <b>0,4631</b>. Cada consequente é cortado na altura α da sua regra; a união das funções recortadas é feita por máximo em cada ponto do universo.','mini',gap=5)
+r1,r2=regras[0],regras[1]
+para(f"Por exemplo, R1 tem ativação <b>{fmt(r1['ativacao'],4)}</b> e R2 tem ativação <b>{fmt(r2['ativacao'],4)}</b>, calculadas com os valores deste cliente. Cada consequente é cortado na altura α da sua regra; a união das funções recortadas é feita por máximo em cada ponto do universo.",'mini',gap=5)
 head('3. Centroide da distribuição agregada')
 para(f"Área = integral μ(z) dz ≈ <b>{fmt(D_f['area'],4)}</b>; primeiro momento = integral z·μ(z) dz ≈ <b>{fmt(D_f['momento'],4)}</b>. Centroide = momento / área = <b>{fmt(D_f['centroide_percentual'],2)}%</b>. Com teto didático de R$ 20.000, recomenda-se <b>{moeda(D['pipeline_cinco_clientes'][2]['limite_reais'])}</b>.",'small',gap=4)
 # compact figure
@@ -278,9 +287,11 @@ for e in D['pipeline_cinco_clientes']:
                  f"{e['limite_percentual']:.1f}%".replace('.',','),
                  f"{e['limite_reais']:,.0f}".replace(',','.')])
 tab(rows,widths=[43,96,76,66,68,71,CW-420],font_size=7.1,row_pad=7)
-para('<b>Leitura:</b> o cliente #16, com risco estimado muito baixo, recebe 67,5% do teto, enquanto o cliente #240, cujo risco é mais elevado e tem maior comprometimento de renda, recebe 17,2%. As regras não definem aprovação/reprovação automática; definem apenas um percentual de limite, sujeito a políticas adicionais.','small')
+cliente_baixo=min(D['pipeline_cinco_clientes'],key=lambda item:item['probabilidade_inadimplencia'])
+cliente_alto=max(D['pipeline_cinco_clientes'],key=lambda item:item['probabilidade_inadimplencia'])
+para(f"<b>Leitura:</b> o cliente #{cliente_baixo['id_teste']}, com risco estimado de {pct(cliente_baixo['probabilidade_inadimplencia'])}, recebe {fmt(cliente_baixo['limite_percentual'],1)}% do teto, enquanto o cliente #{cliente_alto['id_teste']}, com risco de {pct(cliente_alto['probabilidade_inadimplencia'])}, recebe {fmt(cliente_alto['limite_percentual'],1)}%. As regras não definem aprovação/reprovação automática; definem apenas um percentual de limite, sujeito a políticas adicionais.",'small')
 head('Interpretação dos resultados')
-figure('comparacao_modelos.png',width=410,height=172,captiontext='Figura 6. Comparação dos modelos no teste, incluindo precisão e recall.')
+figure('comparacao_modelos.png',width=410,height=172,captiontext='Figura 6. Métricas calculadas nesta execução para os modelos de referência, a MLP manual e a MLP otimizada pelo AG.')
 para(f"A MLP otimizada apresentou acurácia de <b>{pct(om['acuracia'])}</b>, precisão de <b>{pct(om['precisao'])}</b>, recall de <b>{pct(om['recall'])}</b> e F1 de <b>{pct(om['f1'])}</b>. Foram {om['FN']} falsos negativos e {om['FP']} falsos positivos no teste. Uma instituição real precisaria estimar custos dos dois erros, calibrar probabilidades e definir faixas de rejeição/revisão humana antes da concessão de crédito.",'small')
 
 # PAGE 8
