@@ -1,15 +1,15 @@
 # CrediSmart — Trabalho Prático Integrador de Inteligência Artificial
 
 Centro Universitário Padre Anchieta · 2º semestre de 2026  
-**Prazo:** 17/11/2026, às 23h59 · **Arguição:** 18/11/2026
 
-## 1. Identificação do grupo (preencher antes da entrega)
+## 1. Identificação do grupo 
 
 | Integrante | RA |
 |---|---|
-| Aluno(a) 1: __________________ | __________________ |
-| Aluno(a) 2: __________________ | __________________ |
-| Aluno(a) 3: __________________ | __________________ |
+| Aluno(a) 1: Alessandra de Freitas  Bichara | 2405879 |
+| Aluno(a) 2: Kewin Lorente Magoga | 2403809 |
+| Aluno(a) 3: Livia Ferreira Rodrigues | 2408713 |
+| Aluno(a) 4: Manuella de Souza Filgueiras | 2404788 |
 
 ## 2. O que o projeto faz
 
@@ -115,4 +115,4 @@ O AG encontrou **22 neurônios, taxa 0,3688 e 107 épocas**. O ganho observado f
 
 ## 8. Declaração de uso de IA generativa
 
-Foram usadas ferramentas de IA generativa, incluindo **ChatGPT (OpenAI)**, como auxílio para elaborar e organizar código, explicações, gráficos, testes, documentação e relatório. **O grupo deve revisar, compreender e assumir a autoria e a responsabilidade pelo material enviado.** Atualizem a declaração caso outras ferramentas também tenham participado.
+Foram usadas ferramentas de IA generativa, incluindo **ChatGPT (OpenAI)**, como auxílio para elaborar e organizar código, explicações, gráficos, testes, documentação e relatório.
